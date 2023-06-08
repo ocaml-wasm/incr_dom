@@ -110,7 +110,7 @@ let request_animation_frame callback =
     let timeout_callback = Js.wrap_callback (fun _ -> callback ()) in
     (* 1000 ms = 1s;  Chosen because backgrounded tangle sends requests
        at approximately this rate. *)
-    let timeout = 1000.0 in
+    let timeout = Js.float 1000.0 in
     Dom_html.window##setTimeout timeout_callback timeout
   in
   Request_ids.set_once_exn request_ids ~animation_frame_id ~set_timeout_id
@@ -609,7 +609,7 @@ let start_bonsai
           occur before each display update occur "at the same time." *)
        let now =
          let date = new%js Js.date_now in
-         Time_ns.Span.of_ms date##getTime |> Time_ns.of_span_since_epoch
+         Time_ns.Span.of_ms (Js.to_float date##getTime) |> Time_ns.of_span_since_epoch
        in
        Incr.Clock.advance_clock Incr.clock ~to_:now;
        App.advance_clock_to now;

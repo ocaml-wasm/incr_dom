@@ -32,10 +32,10 @@ let innerWidth () = Dom_html.window##.innerWidth
 
 let element_is_in_viewport (elt : Dom_html.element Js.t) =
   let rect = elt##getBoundingClientRect in
-  Float.( >= ) rect##.top 0.
-  && Float.( >= ) rect##.left 0.
-  && Float.( <= ) rect##.bottom (Float.of_int (innerHeight ()))
-  && Float.( <= ) rect##.right (Float.of_int (innerWidth ()))
+  Float.( >= ) (Js.to_float rect##.top) 0.
+  && Float.( >= ) (Js.to_float rect##.left) 0.
+  && Float.( <= ) (Js.to_float rect##.bottom) (Float.of_int (innerHeight ()))
+  && Float.( <= ) (Js.to_float rect##.right) (Float.of_int (innerWidth ()))
 ;;
 
 (** Scrolls to the item marked as "keep-in-view" *)
@@ -58,10 +58,10 @@ let scroll ?(id = "keep-in-view") () =
    relative to the view port *)
 let viewport_rect_of_element (elt : Dom_html.element Js.t) : float Rect.t =
   let rect = elt##getBoundingClientRect in
-  { Rect.top = rect##.top
-  ; left = rect##.left
-  ; bottom = rect##.bottom
-  ; right = rect##.right
+  { Rect.top = Js.to_float rect##.top
+  ; left = Js.to_float rect##.left
+  ; bottom = Js.to_float rect##.bottom
+  ; right = Js.to_float rect##.right
   }
 ;;
 
